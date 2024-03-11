@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cs4520.assignment4.databinding.ProductListLayoutBinding
 
 class ProductListFragment: Fragment(R.layout.product_list_layout) {
+    private var _binding: ProductListLayoutBinding? = null
+    private val binding get() = _binding!!
 
     private val productList: ArrayList<Product> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,13 +34,15 @@ class ProductListFragment: Fragment(R.layout.product_list_layout) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.product_list_layout, container, false)
+        _binding = ProductListLayoutBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
-
+        val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         val adapter = ProductAdapter(productList)
         recyclerView.adapter = adapter
+
         return view
     }
 }

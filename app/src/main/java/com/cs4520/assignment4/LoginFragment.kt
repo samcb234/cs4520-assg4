@@ -9,28 +9,33 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.cs4520.assignment4.databinding.LoginLayoutBinding
 
 class LoginFragment: Fragment(R.layout.login_layout) {
+    private var _binding: LoginLayoutBinding? = null
+
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.login_layout, container, false)
+        _binding = LoginLayoutBinding.inflate(inflater, container, false)
+        val view = binding.root
+        binding.loginButton.setOnClickListener(View.OnClickListener {
 
-        view.findViewById<Button>(R.id.loginButton).setOnClickListener(View.OnClickListener {
-
-            val username = view.findViewById<EditText>(R.id.usernameText)
-            val password = view.findViewById<EditText>(R.id.passwordText)
-            if(username.text.toString() == ("admin") && password.text.toString() == ("admin")){
+            val username = binding.usernameText.text.toString()
+            val password = binding.passwordText.text.toString()
+            if(username == ("admin") && password == ("admin")){
                 findNavController().navigate(R.id.action_loginFragment_to_productListFragment)
             } else {
                 val toast = Toast.makeText(context, "Please enter correct username and password", Toast.LENGTH_SHORT)
                 toast.show()
             }
 
-            username.setText("")
-            password.setText("")
+            binding.usernameText.setText("")
+            binding.passwordText.setText("")
         })
         return view
     }
