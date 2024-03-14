@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/productListFragment"
-        android:name="com.cs4520.assignment4.ProductListFragment"
+        android:name="com.cs4520.assignment4.View.ProductListFragment"
         android:label="ProductListFragment"
         tools:layout="@layout/product_list_layout">
     </fragment>

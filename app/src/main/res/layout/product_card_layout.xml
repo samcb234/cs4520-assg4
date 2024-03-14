@@ -11,15 +11,15 @@
 
         <ImageView
             android:id="@+id/imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:maxHeight="70dp"
-            android:maxWidth="70dp"/>
+            android:contentDescription="imageView" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

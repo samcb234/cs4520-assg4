@@ -1,4 +1,4 @@
-package com.cs4520.assignment4
+package com.cs4520.assignment4.View
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,18 +7,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.cs4520.assignment4.R
+import com.cs4520.assignment4.model.Product
 
 class ProductAdapter(private val productList: List<Product>): RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.product_card_layout, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ProductAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product: Product = productList[position]
 
-        holder.imageView.adjustViewBounds = true
 
         when(product){
             is Product.Food -> {
@@ -30,9 +31,6 @@ class ProductAdapter(private val productList: List<Product>): RecyclerView.Adapt
                 holder.setBGColor("#E06666")
             }
         }
-
-        holder.imageView.maxHeight = 150
-        holder.imageView.maxWidth = 150
 
         holder.nameView.text = product.name.toString()
         if(product.expiryDate != null){
