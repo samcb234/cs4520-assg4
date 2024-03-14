@@ -28,14 +28,14 @@ class ProductViewModel: ViewModel() {
              throwable.printStackTrace()
          }
         CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch {
-            println("called")
+
             val response = retrofit.getProducts()
-            println("received response from api")
+
             if(response.isSuccessful){
-                println("API worked!")
+
                 if(response.body().isNullOrEmpty()){
                     launch(Dispatchers.Main){
-                        _products.value = buildProducts()
+
                     }
                 } else {
                     launch(Dispatchers.Main){
@@ -43,26 +43,13 @@ class ProductViewModel: ViewModel() {
                     }
                 }
             } else {
-                println("API didn't work")
+
                 launch(Dispatchers.Main){
-                    _products.value = buildProducts()
+
                 }
             }
-
-            println("made it to the end of the coroutine")
         }
      }
 
-    private fun buildProducts(): ArrayList<Product>{
-        val productList: ArrayList<Product> = ArrayList()
-        for(i in 0..productsDataset.size -1){
-            val l = productsDataset[i]
-            if(l[1] == "Food"){
-                productList.add(Product.Food(l[0], l[1], l[2], l[3]))
-            } else{
-                productList.add(Product.Equipment(l[0], l[1], l[2], l[3]))
-            }
-        }
-        return productList
-    }
+
 }

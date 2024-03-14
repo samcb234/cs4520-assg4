@@ -18,9 +18,8 @@ class ProductAdapter(private val productList: List<Product>): RecyclerView.Adapt
     override fun onBindViewHolder(holder: ProductAdapter.ViewHolder, position: Int) {
         val product: Product = productList[position]
 
-        holder.imageView.setAdjustViewBounds(true)
-        holder.imageView.maxHeight = 150
-        holder.imageView.maxWidth = 150
+        holder.imageView.adjustViewBounds = true
+
         when(product){
             is Product.Food -> {
                 holder.imageView.setImageResource(R.drawable.food)
@@ -32,6 +31,8 @@ class ProductAdapter(private val productList: List<Product>): RecyclerView.Adapt
             }
         }
 
+        holder.imageView.maxHeight = 150
+        holder.imageView.maxWidth = 150
 
         holder.nameView.text = product.name.toString()
         if(product.expiryDate != null){
