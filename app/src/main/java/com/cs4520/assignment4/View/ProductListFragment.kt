@@ -43,6 +43,7 @@ class ProductListFragment: Fragment(R.layout.product_list_layout) {
         val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
+        observeLoading()
         observeErrorMessages()
         observeProductList()
         viewModel.refreshProducts()
@@ -68,12 +69,31 @@ class ProductListFragment: Fragment(R.layout.product_list_layout) {
     private fun observerHelper(products: List<Product>){
         val adapter = ProductAdapter(products)
         binding.recyclerview.adapter = adapter
-        if(products.size > 0){
-            binding.recyclerview.visibility = View.VISIBLE
-            binding.noProductsAvailable.visibility = View.GONE
-        } else {
-            binding.recyclerview.visibility = View.GONE
-            binding.noProductsAvailable.visibility = View.VISIBLE
+        if(!viewModel.loading.value!!){
+            if(products.isNotEmpty()){
+                binding.recyclerview.visibility = View.VISIBLE
+                binding.noProductsAvailable.visibility = View.GONE
+            } else {
+                binding.recyclerview.visibility = View.GONE
+                binding.noProductsAvailable.visibility = View.VISIBLE
+            }
         }
     }
+
+    private fun observeLoading(){
+        viewModel.loading.observe(viewLifecycleOwner){
+
+                if(it){
+                    binding.recyclerview.visibility = View.GONE
+                    binding.noProductsAvailable.visibility = View.GONE
+                    binding.loadingBar.visibility = View.VISIBLE
+                } else{
+                    binding.loadingBar.visibility = View.GONE
+                    observerHelper(viewModel.products.value!!)
+                }
+
+        }
+    }
+
+
 }

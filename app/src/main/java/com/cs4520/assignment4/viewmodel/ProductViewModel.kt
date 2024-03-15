@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.UnknownHostException
 
 class ProductViewModel(private val productRepository: ProductRepository): ViewModel() {
 
@@ -44,28 +45,33 @@ class ProductViewModel(private val productRepository: ProductRepository): ViewMo
              throwable.printStackTrace()
          }
         CoroutineScope(Dispatchers.IO + coroutineExceptionHandler).launch {
-            val response = retrofit.getProducts()
-            if(response.isSuccessful){
-                productRepository.clearDB()
-                if(!response.body().isNullOrEmpty()){
-                    val filteredResponse = response.body()!!.filter {
-                        if(it.type == "Food"){
-                            return@filter (it.price != null) && (it.expiryDate != null)
+            try{
+                val response = retrofit.getProducts()
+                if(response.isSuccessful){
+                    if(!response.body().isNullOrEmpty()){
+                        val filteredResponse = response.body()!!.filter {
+                            if(it.type == "Food"){
+                                return@filter (it.price != null) && (it.expiryDate != null)
+                            }
+                            else{
+                                return@filter (it.price != null)
+                            }
                         }
-                        else{
-                            return@filter (it.price != null)
-                        }
+                        productRepository.insertAll(filteredResponse)
+                        println("adding products")
                     }
-                    productRepository.insertAll(filteredResponse)
+                    launch(Dispatchers.Main){
+                        _errorMessage.value = null
+                    }
                 }
-                launch(Dispatchers.Main){
-                    _errorMessage.value = null
+                else{
+                    println("non 200 response")
+                    launch(Dispatchers.Main){
+                        _errorMessage.value = response.message()
+                    }
                 }
-            }
-            else{
-                launch(Dispatchers.Main){
-                    _errorMessage.value = response.message()
-                }
+            } catch (e: UnknownHostException){
+                println("no internet")
             }
 
             launch(Dispatchers.Main){

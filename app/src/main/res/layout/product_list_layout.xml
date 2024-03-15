@@ -20,4 +20,10 @@
         android:visibility="gone"
         android:text="@string/no_products_available"/>
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loading_bar"
+        android:visibility="gone"/>
+
 </androidx.appcompat.widget.LinearLayoutCompat>
